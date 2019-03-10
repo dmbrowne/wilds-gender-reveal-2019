@@ -1,0 +1,43 @@
+.card {
+  max-width: 500px;
+}
+.cardContent {
+  display: flex;
+  align-items: top;
+}
+
+.letters {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 16px;
+  margin-top: 8px;
+  margin-bottom: 4px;
+  padding-left: 8px;
+}
+
+.riddle {
+  padding: 0 8px;
+  text-align: center;
+}
+
+.locked {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 75px;
+  border: 1px solid;
+  flex-shrink: 0;
+  border-radius: 4px;
+  margin-left: 16px;
+  margin-top: 8px;
+  margin-bottom: 4px;
+}
+
+.answerWords {
+  margin-left: 24px;
+  flex-grow: 0;
+}
+
+.answerWords:first-of-type {
+  margin-left: 0
+}

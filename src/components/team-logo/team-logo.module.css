@@ -1,0 +1,49 @@
+.logoRoot {
+  text-align: center;
+}
+
+.horizontalLogo {
+  display: inline-flex;
+  align-items: center;
+}
+
+.teamLabel {
+  color: #fff;
+  line-height: normal;
+  text-indent: -14px;
+  font-size: 40px;
+}
+.dark .teamLabel {
+  color: #111;
+}
+
+.horizontalLogo .teamLabel {
+  text-indent: 0;
+  margin-right: 8px;
+}
+
+.smallLabel {
+  font-size: 32px;
+}
+
+.gender {
+  line-height: 48px;
+  font-size: 60px;
+  text-shadow: 1px 1px 1px #fff;
+  text-transform: uppercase;
+}
+.dark .gender {
+  text-shadow: 1px 1px 1px #111;
+}
+
+.smallGender {
+  font-size: 40px;
+}
+
+.mrTheme {
+  color: #53FF49;
+}
+
+.mrsTheme {
+  color: #4A0BAE;
+}

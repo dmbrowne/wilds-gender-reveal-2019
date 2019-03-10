@@ -1,0 +1,31 @@
+.root {
+  min-height: 100vmax;
+  overflow: hidden;
+}
+
+.main {
+  margin-top: -48px;
+  position: relative;
+}
+.container {
+  padding: 0 16px;
+  margin: 16px 0;
+}
+
+.lettersDrawer {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 8px;
+}
+
+.lettersDrawer > * {
+  margin: auto;
+}
+
+.submitButtonContainer {
+  margin: 24px 16px 16px;
+}
+
+.centeredText {
+  text-align: center;
+}

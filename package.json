@@ -3,12 +3,23 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^3.9.2",
+    "@material-ui/icons": "^3.0.2",
+    "@storybook/addon-options": "^4.1.13",
     "@types/jest": "24.0.9",
     "@types/node": "11.10.4",
     "@types/react": "16.8.6",
     "@types/react-dom": "16.8.2",
+    "@types/react-router-dom": "^4.3.1",
+    "classnames": "^2.2.6",
+    "final-form": "^4.12.0",
+    "firebase": "^5.8.5",
+    "firebaseui": "^3.5.2",
     "react": "^16.8.3",
+    "react-confetti": "^2.5.0",
     "react-dom": "^16.8.3",
+    "react-final-form": "^4.1.0",
+    "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.5",
     "typescript": "3.3.3333"
   },
@@ -16,7 +27,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "storybook": "start-storybook -p 9001 -c .storybook -s ./public",
+    "storybook-build": "build-storybook -c .storybook -o .storybook-build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -26,5 +39,16 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "@storybook/addon-actions": "^4.1.13",
+    "@storybook/addon-knobs": "^4.1.13",
+    "@storybook/addon-viewport": "4.1.13",
+    "@storybook/addons": "^4.1.13",
+    "@storybook/react": "^4.1.13",
+    "@types/classnames": "^2.2.7",
+    "@types/storybook__addon-actions": "^3.4.2",
+    "@types/storybook__addon-knobs": "^4.0.1",
+    "@types/storybook__react": "^4.0.1"
+  }
 }

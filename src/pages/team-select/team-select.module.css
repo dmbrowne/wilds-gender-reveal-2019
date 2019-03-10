@@ -1,0 +1,19 @@
+.container {
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+.footerContent {
+  position: absolute;
+  bottom: 10vh;
+  width: 100%;
+  text-align: center;
+}
+
+.hintCards {
+  display: 'flex';
+  align-items: 'center';
+  flex-direction: 'column';
+  margin: '32px 0';
+}

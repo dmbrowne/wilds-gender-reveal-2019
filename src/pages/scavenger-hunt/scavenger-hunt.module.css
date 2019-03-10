@@ -1,0 +1,38 @@
+.container {
+  min-height: 100vmax;
+  background: #eee;
+  padding-top: 56px;
+  padding-bottom: calc(2.5vh + 56px);
+}
+.content {
+  padding: 0 16px 16px;
+  overflow: hidden;
+}
+
+.header {
+  display: grid;
+  grid-template-columns: 0.3fr 0.7fr;
+  grid-gap: 16px;
+}
+
+.logo {
+  margin: 0;
+  text-align: center;
+}
+
+.pageFab {
+  position: fixed;
+  bottom: 2vh;
+  right: 16px;
+}
+
+.hintCard {
+  margin: 16px 0;
+}
+
+.opposingScores {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 8px 16px 0 0;
+}

@@ -1,0 +1,9 @@
+.card {
+  max-width: 600px;
+  padding: 0 24px 16px;
+}
+
+.submitButtonContainer {
+  margin: 16px 0;
+  text-align: right;
+}

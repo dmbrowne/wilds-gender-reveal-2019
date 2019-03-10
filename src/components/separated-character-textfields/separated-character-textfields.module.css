@@ -1,0 +1,9 @@
+.textField {
+  font-size: 18px !important;
+  text-align: center;
+  text-transform: uppercase;
+  padding: 6px 0 !important;
+}
+.inputRoot {
+  height: 32px;
+}

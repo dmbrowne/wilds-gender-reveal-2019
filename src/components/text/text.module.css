@@ -1,0 +1,28 @@
+:root {
+  --abrilFont: 'Abril Fatface', cursive;
+  --cursiveFont: 'Great Vibes', cursive;
+  --letterCardFont: 'Alfa Slab One', sans-serif;
+  --bodyFont: 'Lato', sans-serif;
+}
+
+.abrilFatFace {
+  font-family: var(--abrilFont);
+  font-size: 60px;
+}
+
+.greatVibes {
+  font-family: var(--cursiveFont);
+  font-size: 40px;
+}
+
+.body {
+  font-family: var(--bodyFont);
+}
+
+.mrTheme {
+  color: #53FF49;
+}
+
+.mrsTheme {
+  color: #4A0BAE;
+}

@@ -1,0 +1,29 @@
+.title {
+  color: #fff;
+  padding: 0 24px;
+  font-size: 12px;
+}
+
+.socialSignIn {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 16px;
+  margin: 8px 24px 16px;
+  background: #fff;
+  padding: 8px;
+}
+
+.facebook {
+  background: #3C5A99 !important;
+  color: #fff !important;
+}
+
+.google {
+  background: #DB4437 !important;
+  color: #fff !important;
+}
+
+.twitter {
+  background: #1DA1F2 !important;
+  color: #fff !important;
+}

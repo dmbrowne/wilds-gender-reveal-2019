@@ -1,0 +1,70 @@
+.root {
+  position: relative;
+  padding: 16px 0;
+  overflow: hidden;
+}
+.backfills {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  top: 0;
+  left: 0;
+}
+.backfills > * {
+  flex: 1;
+}
+.content {
+  position: relative;
+}
+.title {
+  padding: 8px 0;
+  background-size: cover;
+}
+.teamlogos {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px;
+}
+.main {
+  position: relative;
+}
+.games {
+  margin: 16px 24px;
+}
+.gameCard {
+  margin: 16px 0;
+  display: flex;
+  align-items: center;
+}
+.gameCardScore {
+  margin: 0 8px;
+  padding: 4px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+.gameCardContent {
+  flex: 1
+}
+.tallySection {
+  border-top: 2px dotted #fff;
+  font-family: 'Fredericka the Great';
+  width: 90%;
+  margin: auto;
+  display: grid;
+  grid-gap: 0;
+  grid-template-columns: repeat(2, 1fr);
+  min-height: 300px;
+  font-size: 48px;
+  color: #fff;
+}
+
+.tallySection > * {
+  font-family: 'Tally Mark';
+  text-align: center;
+  padding: 16px 0;
+}

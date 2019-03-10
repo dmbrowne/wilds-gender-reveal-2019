@@ -1,0 +1,74 @@
+.root {
+  padding: 16px 8px;
+  min-height: 100vh;
+}
+
+.divider {
+  border-bottom: 5px dotted rgb(235, 235, 235);
+  width: 75%;
+  margin: 24px auto 16px;
+}
+
+.smallDivider {
+  composes: divider;
+  width: 90%;
+  border-width: 3px;
+}
+
+.panels {
+  display: flex;
+  min-height: 100px;
+  justify-content: stretch;
+  padding: 0 16px;
+}
+
+.panels > * {
+  flex: 1;
+  flex-shrink: 0;
+}
+
+.girlsPanel {
+  border-left: 5px dotted rgb(235, 235, 235);
+  text-align: right;
+}
+
+.cta {
+  width: 120px;
+  height: 120px;
+  box-sizing: content-box;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f1f1f1;
+  margin: 0 auto 8px;
+}
+
+.cta svg {
+  width: 90%;
+}
+
+.ctas {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 24px;
+}
+
+.ctas > * {
+  text-align: center;
+}
+
+.boyCta {
+  composes: cta;
+  transform: rotate(-10deg);
+}
+
+.boyCta svg {
+  width: 80%;
+  margin-top: 5%;
+}
+
+.girlCta {
+  composes: cta;
+  transform: rotate(10deg);
+}

@@ -1,0 +1,57 @@
+.gameCard {
+  display: flex;
+  justify-content: stretch;
+  min-height: 100px;
+  margin: 16px 0;
+}
+
+.scavengerHuntCardTitle {
+  font-family: 'Amatic SC', cursive;
+  font-size: 24px;
+  margin: 0;
+}
+
+.cardAddornment {
+  position: relative;
+  width: 80px;
+  background-size: cover;
+  background-position: center;
+}
+
+.cardAddornmentOverlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0.4;
+}
+
+.cardFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.cardFooterStatus {
+  display: flex;
+  align-items: center;
+}
+
+.balloonCardAddornment {
+  composes: cardAddornment;
+  background-image: url(./balloons.svg);
+}
+
+.wordgameCardAddornment {
+  composes: cardAddornment;
+  background-image: url(./scrabble.svg);
+}
+
+.wordgameCardTitleWord {
+  display: inline-block;
+  margin: 4px;
+}
+
+.cardHeader {
+  margin-bottom: 8px;
+}

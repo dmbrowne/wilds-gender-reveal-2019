@@ -1,0 +1,42 @@
+.letterPlaceholder {
+  position: relative;
+  margin-left: 16px;
+  min-width: 41px;
+  min-height: 41px;
+  margin-bottom: 38px;
+}
+
+.letterPlaceholder:first-of-type {
+  margin-left: 0;
+}
+
+.activeOverlay {
+  position: absolute;
+  width: 100%;
+  height: calc(100% - 4px);
+  z-index: 5;
+  opacity: 0.5;
+  top: -4px;
+  left: -4px;
+  border-width: 4px;
+  border-style: solid;
+}
+
+.underline {
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  font-size: 56px;
+  opacity: 0.8;
+  font-family: 'Fredericka the Great';
+}
+
+.deleteButton {
+  position: absolute !important;
+  left: 0;
+  top: 100%;
+}
+
+.undoText {
+  font-size: 12px;
+}

@@ -1,0 +1,9 @@
+.root {
+  position: relative;
+  background-position: center;
+  background-size: contain;
+  background-image: url(./chalkboard.jpg);
+}
+.tiled {
+  background: url(./chalkboard-gray-6.png);
+}

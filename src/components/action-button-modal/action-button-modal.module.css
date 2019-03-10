@@ -1,0 +1,9 @@
+.container {
+  padding-bottom: calc(2.5vh + 56px);
+}
+
+.actionButton {
+  position: fixed;
+  bottom: 2vh;
+  right: 16px;
+}
