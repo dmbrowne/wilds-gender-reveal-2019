@@ -23,8 +23,12 @@ interface IState {
   splitValues: string[];
 }
 
-export default class SeparatedCharacterInput extends React.Component<IProps, IState> {
+class SeparatedCharacterInput extends React.Component<IProps, IState> {
   inputRefs: React.RefObject<HTMLInputElement>[];
+
+  static defaultProps = {
+    spacing: 16,
+  }
 
   constructor(props: IProps) {
     super(props);
@@ -131,6 +135,4 @@ export default class SeparatedCharacterInput extends React.Component<IProps, ISt
   }
 }
 
-SeparatedCharacterInput.defaultProps = {
-  spacing: 16,
-}
+export default SeparatedCharacterInput;

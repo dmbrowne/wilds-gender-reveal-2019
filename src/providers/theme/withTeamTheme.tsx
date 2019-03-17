@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { Subtract } from 'utility-types';
+
 import ThemeContext from './context';
 import { Theme, Color } from '@material-ui/core';
 
@@ -16,12 +18,13 @@ export interface IWithTeamThemeProps {
   teamThemeProps: IThemeProps;
 }
 
-export function withTeamTheme(Component: React.ReactType) {
-  return function withTheme<Props>(props: Props) {
+export function withTeamTheme<P extends IWithTeamThemeProps>(Component: React.ComponentType<P>) {
+  const withTeamTheme: React.FC<Subtract<P, IWithTeamThemeProps>> = (props) => {
     return (
       <ThemeContext.Consumer>
-        {(themeprops: IThemeProps) => <Component teamThemeProps={themeprops} {...props} />}
+        {(themeprops) => <Component teamThemeProps={themeprops} {...props as P} />}
       </ThemeContext.Consumer>
     )
   }
+  return withTeamTheme
 }

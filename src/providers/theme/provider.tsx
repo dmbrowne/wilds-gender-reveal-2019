@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import ThemeContext from './context';
 import { createMuiTheme, MuiThemeProvider, Theme, Color } from '@material-ui/core';
 import { purple, green } from '@material-ui/core/colors';
+import withTeam, { IWithTeamContext } from '../team/team-consumer';
+import gameconfig from '../../gameconfig';
 
 const greenPalette = {
   light: '#B2D5BA',
@@ -10,7 +12,7 @@ const greenPalette = {
   contrastText: '#fff',
 };
 
-interface IProps {
+interface IProps extends IWithTeamContext {
   theme?: 'mr' | 'mrs';
 }
 
@@ -21,7 +23,12 @@ interface IState {
   opposingColorPalette: Color;
 }
 
-export default class ThemeProvider extends Component<IProps, IState> {
+const __getThemeBasedOnId = (id: string) => {
+  const isMrTheme = id === gameconfig.teamMrId
+  return isMrTheme ? 'mr' : 'mrs';
+}
+
+class ThemeProvider extends Component<IProps, IState> {
   typography = {
     display1: {
       fontSize: '2.2rem',
@@ -68,7 +75,11 @@ export default class ThemeProvider extends Component<IProps, IState> {
 
   constructor(props: IProps) {
     super(props);
-    const defaultTheme = props.theme || 'mr';
+    const { selectedTeam } = props.teamContext;
+    const defaultTheme = selectedTeam && selectedTeam.id
+      ? __getThemeBasedOnId(selectedTeam && selectedTeam.id)
+      : 'mr';
+
     this.state = {
       activeColorPalette: defaultTheme === 'mr' ? green : purple,
       opposingColorPalette: defaultTheme === 'mr' ? purple : green,
@@ -77,6 +88,20 @@ export default class ThemeProvider extends Component<IProps, IState> {
     }
   }
 
+  componentDidUpdate = (prevProps: IProps) => {
+
+    if (!this.props.teamContext.selectedTeam) {
+      return false;
+    }
+    const newSelectedTeamId = this.props.teamContext.selectedTeam.id;
+    if (
+      !prevProps.teamContext.selectedTeam ||
+      prevProps.teamContext.selectedTeam.id !== this.props.teamContext.selectedTeam.id
+    ) {
+      this.switchTheme(__getThemeBasedOnId(newSelectedTeamId));
+    }
+  }
+  
   getTeamTheme(team: 'mr' | 'mrs') {
     return team === 'mr' ? greenPalette : purple
   }
@@ -117,3 +142,7 @@ export default class ThemeProvider extends Component<IProps, IState> {
     )
   }
 }
+
+const TeamThemeProvider = withTeam(ThemeProvider)
+
+export default TeamThemeProvider;

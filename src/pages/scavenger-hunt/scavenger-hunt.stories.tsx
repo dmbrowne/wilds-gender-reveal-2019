@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { storiesOf } from '@storybook/react';
 import ScavengerHunt from './scavenger-hunt';
-import ThemeProvider from '../../contexts/theme/provider';
+import ThemeProvider from '../../providers/theme/provider';
 import { number, array, object } from '@storybook/addon-knobs';
 
 const clues = [

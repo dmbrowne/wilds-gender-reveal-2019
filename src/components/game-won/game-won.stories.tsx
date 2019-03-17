@@ -1,6 +1,6 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import ThemeProvider from '../../contexts/theme/provider';
+import ThemeProvider from '../../providers/theme/provider';
 import { number } from '@storybook/addon-knobs';
 import GameWon from './game-won';
 import { Card } from '@material-ui/core';

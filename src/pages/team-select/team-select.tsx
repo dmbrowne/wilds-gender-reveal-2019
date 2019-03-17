@@ -1,23 +1,52 @@
 import React, { useState, useEffect } from 'react'
-import { Button } from '@material-ui/core';
-import ArrowBack from '@material-ui/icons/ArrowBack';
+import { Button, CircularProgress } from '@material-ui/core';
 
-import { withTeamTheme } from '../../contexts/theme';
-import { IWithTeamThemeProps } from '../../contexts/theme/withTeamTheme';
+import { withTeamTheme } from '../../providers/theme';
+import { IWithTeamThemeProps } from '../../providers/theme/withTeamTheme';
 
 import TeamSelect from '../../components/team-select';
-import SignUpForm from '../../components/sign-up-form';
-import SocialSignIn from '../../components/social-sign-in';
 import styles from './team-select.module.css';
 
-interface IProps extends IWithTeamThemeProps {};
+import { RouteComponentProps } from 'react-router';
+import withTeam, { IWithTeamContext } from '../../providers/team/team-consumer';
+import withUser, { IWithUserContext } from '../../providers/user/user-consumer';
+import useTeams from '../../hooks/teams';
+import { getFirebaseAuth } from '../../firebase';
+import PlayerEntry from './player-entry';
 
-function TeamSelectionPage({ teamThemeProps }: IProps) {
-  const { switchTheme, currentTeam } = teamThemeProps;
+interface IProps extends IWithUserContext, IWithTeamThemeProps, IWithTeamContext, RouteComponentProps {};
+
+const TeamSelectionPage: React.FC<IProps> = ({ userContext, teamContext, teamThemeProps, history }) => {
+  const teams = useTeams();
+  const [progressStage, setProgressStage] = useState('teamselect')
   const [height, setHeight] = useState(window.innerHeight)
-  const [selectedTeam, selectTeam] = useState()
-  const [teamConfirmed, confirmTeam] = useState();
+  const [teamConfirmed, confirmTeam] = useState<string | false>();
+  const teamContextId = teamContext.selectedTeam && teamContext.selectedTeam.id || '';
 
+  const onSuccess = () => {
+    teamContext.saveSelectedTeam().then(() => history.push('/'))
+  }
+
+  const getStageContent = () => {
+    switch (progressStage) {
+      case 'entry':
+        return (
+          <PlayerEntry
+            onBackClick={() => setProgressStage('teamselect')}
+            onSuccess={() => onSuccess()}
+          />
+        )
+      case 'teamConfirm':
+        return teamContext.selectedTeam && (
+          <Button onClick={() => {
+            teamContext.saveSelectedTeam().then(() => console.log('success'))
+          }}>Confirm {teamContext.selectedTeam.name}</Button>
+        )
+      case 'teamselect':
+      default:
+        return null;
+    }
+  }
   useEffect(() => {
     setTimeout(() => {
       if (window.innerHeight !== height) {
@@ -27,47 +56,40 @@ function TeamSelectionPage({ teamThemeProps }: IProps) {
   });
 
   const chooseTeam = (team: any) => {
-    selectTeam(team);
-    if (team !== currentTeam) {
-      switchTheme(team);
-    }
+    teamContext.setSelectedTeam(team);
   }
 
-  const confirmScreenContent = () => (
-    <>
-      <Button size="small" onClick={() => confirmTeam(false)} style={{ color: '#fff' }}>
-        <ArrowBack /> Cancel
-      </Button>
-      <SignUpForm />
-      <SocialSignIn title="Or sign in using one of these social providers" />
-    </>
-  );
+  if (!teams) {
+    return <CircularProgress size={50} />
+  }
 
   return (
-      <div className={styles.container}>
-        <TeamSelect
-          minHeight={height}
-          onSelectTeam={chooseTeam}
-          showConfirm={teamConfirmed}
-          bodyContent={() => (!!teamConfirmed
-            ? confirmScreenContent()
-            : null
-          )}
-        />
-        {!!selectedTeam && !teamConfirmed &&
-          <div className={styles.footerContent}>
-            <Button
-              size="large"
-              variant="contained"
-              color="primary"
-              onClick={() => confirmTeam(selectedTeam)}
-            >
-              Continue
-            </Button>
-          </div>
-        }
-      </div>
+    <div className={styles.container}>
+      <TeamSelect
+        minHeight={height}
+        teams={teams}
+        selectedTeamId={teamContextId}
+        onSelectTeam={chooseTeam}
+        showConfirm={teamConfirmed}
+        bodyContent={() => getStageContent()}
+      />
+      {!!teamContextId && !teamConfirmed &&
+        <div className={styles.footerContent}>
+          <Button
+            size="large"
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              confirmTeam(teamContextId);
+              setProgressStage('entry');
+            }}
+          >
+            Continue
+          </Button>
+        </div>
+      }
+    </div>
   )
 }
 
-export default withTeamTheme(TeamSelectionPage);
+export default withUser(withTeam(withTeamTheme(TeamSelectionPage)));

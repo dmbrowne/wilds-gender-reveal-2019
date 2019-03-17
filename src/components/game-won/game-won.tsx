@@ -31,7 +31,7 @@ class Content extends  React.Component<any, {width: number, height: number}>{
     const { width, height } = this.state;
     return (
       <div ref={this.element} style={{ position: 'relative' }}>
-        {(width > 0 && height > 0) && <Confetti width={width} height={height} opacity={0.5}/>}
+        {(width > 0 && height > 0) && <Confetti width={width} height={height} opacity={0.5} {...{} as any}/>}
         {this.props.children}
       </div>
     )

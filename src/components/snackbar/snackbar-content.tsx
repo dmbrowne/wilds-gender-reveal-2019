@@ -64,7 +64,7 @@ function ThemedSnackbarContent(props: IProps) {
 
   return (
     <SnackbarContent
-      style={noShadow && { boxShadow: 'none', border: '1px solid' }}
+      style={noShadow ? { boxShadow: 'none', border: '1px solid' } : {}}
       className={classNames(classes[variant], className)}
       message={
         <span className={classes.message}>

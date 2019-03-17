@@ -2,9 +2,9 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import Component from './solve-mystery-word';
 import { object, text, boolean } from '@storybook/addon-knobs';
-import ThemeProvider from '../../contexts/theme/provider';
+import ThemeProvider from '../../providers/theme/provider';
 
-const Story = ({theme}) => {
+const Story = ({theme}: any) => {
   const hint1 = boolean('hint 1 unlocked', false);
   const hint2 = boolean('hint 2 unlocked', false);
   const hint3 = boolean('hint 3 unlocked', false);
@@ -66,7 +66,7 @@ const Story = ({theme}) => {
             letter: 'e',
             backgroundColor: '#0a5055',
           },
-        ])}
+        ]) as any}
         answer={text('answer', 'answerhh')}
         solved={false}
         hints={hints}

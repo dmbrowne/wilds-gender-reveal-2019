@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import cx from 'classnames';
-import { withTeamTheme } from '../../contexts/theme';
+import { withTeamTheme } from '../../providers/theme';
 import LetterCard, { LetterContext } from '../../components/letter-card/letter-card';
 import ChalkboardGuess from '../../components/chalkboard-guess';
 import { withTheme, Theme, Button, Typography, Divider, Card } from '@material-ui/core';
@@ -8,7 +8,7 @@ import styles from './solve-mystery-word.module.css';
 import LetterCardSilhouette from '../../components/letter-card/letter-card-silhouette';
 import { Info } from '@material-ui/icons';
 import { blue, grey, green, purple } from '@material-ui/core/colors';
-import { IWithTeamThemeProps } from '../../contexts/theme/withTeamTheme';
+import { IWithTeamThemeProps } from '../../providers/theme/withTeamTheme';
 import SolveMysteryWordHeader from '../../components/solve-mystery-word-header';
 import SolveMysteryWordLetterDrawer from '../../components/solve-mystery-word-letter-drawer';
 import SolveMysteryWordHints from '../../components/solve-mystery-word-hints';

@@ -2,9 +2,9 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import Component from './home';
 import { text, select } from '@storybook/addon-knobs';
-import ThemeProvider from '../../contexts/theme/provider';
+import ThemeProvider from '../../providers/theme/provider';
 
-const TeamThemedStory = ({ team, ...props }) => (
+const TeamThemedStory = ({ team, ...props }: any) => (
   <ThemeProvider theme={team}>
     <Component {...props} />
   </ThemeProvider>

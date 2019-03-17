@@ -5,9 +5,15 @@ import { Typography, Card, CardContent } from '@material-ui/core';
 import { green, purple } from '@material-ui/core/colors';
 import Chalkboard from '../../components/chalkboard';
 
-interface IGame {};
+interface IGame {
+  games: Array<{
+    name: string;
+    description: string;
+    [key: string]: any
+  }>
+};
 
-export default function CurrentScores({ games }) {
+export default function CurrentScores({ games }: IGame) {
   return (
     <Chalkboard className={styles.root}>
       <div className={styles.backfills}>

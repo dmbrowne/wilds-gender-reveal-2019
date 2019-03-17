@@ -7,8 +7,11 @@ import { number, text, color, object } from '@storybook/addon-knobs';
 storiesOf('Components|chalkboard-guess', module)
   .add('default', () => {
     const maxLength = number('maxLength', 4);
+    const selectedIdx = number('selectedIdx', 0);
     return (
       <ChalkboardGuess
+        selectedIdx={selectedIdx}
+        onItemClick={action('onItemClick')}
         onDelete={(val) => ({})}
         getItemKey={(item) => item.id}
         letters={object('letters', [
@@ -19,7 +22,6 @@ storiesOf('Components|chalkboard-guess', module)
           }
         ])}
         maxLength={maxLength}
-        onSelectIdx={action('selectedIdx')}
       />
     )
 })

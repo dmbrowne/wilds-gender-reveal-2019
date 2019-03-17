@@ -5,7 +5,7 @@ import { ReactComponent as TwitterIcon } from './icons/twitter.svg';
 import { ReactComponent as FacebookIcon } from './icons/facebook-square.svg';
 
 import styles from './social-sign-in.module.css';
-import firebase from '../../lib/firebase';
+import firebase from '../../firebase';
 
 export default function SocialSignIn({ title, onSignIn }: { title?: string, onSignIn?: () => any }) {
   const facebookProvider = new firebase.auth.FacebookAuthProvider();

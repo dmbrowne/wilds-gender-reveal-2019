@@ -1,7 +1,7 @@
 import React from 'react'
 import GenderLogo from '../../components/team-logo/team-logo';
-import { withTeamTheme } from '../../contexts/theme';
-import { IWithTeamThemeProps } from '../../contexts/theme/withTeamTheme';
+import { withTeamTheme } from '../../providers/theme';
+import { IWithTeamThemeProps } from '../../providers/theme/withTeamTheme';
 import HintCodeCard from '../../components/hint-code-card/hint-code-card';
 import { AppBar, Toolbar, IconButton, Typography, Fab, LinearProgress, Divider, Button } from '@material-ui/core';
 import { Menu, Add } from '@material-ui/icons';
@@ -10,10 +10,19 @@ import styles from './scavenger-hunt.module.css';
 import ActionButtonModal from '../../components/action-button-modal';
 import NewCodeForm from '../../components/new-code-form/new-code-form';
 import TeamAvatar from '../../components/team-avatar';
+import { LetterContext } from '../../components/letter-card/letter-card';
 
 interface IProps extends IWithTeamThemeProps {
   totalClues: number;
   cluesFound: number;
+  clues: Array<{
+    unlocked: boolean;
+    code: string;
+    letters: [LetterContext, LetterContext];
+    answer: string;
+    riddle: string;
+    [key: string]: any;
+  }>
   opposingTeam: {
     totalClues: number;
     cluesFound: number;
