@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import cx from 'classnames';
 import { Card, CardContent, TextField, Typography, Divider, Fab } from '@material-ui/core';
 import { Lock, Send, QuestionAnswer, Check } from '@material-ui/icons';
@@ -8,14 +8,15 @@ import SeparatedCharacterTextFields from '../separated-character-textfields';
 
 interface IProps {
   code: string,
-  unlocked?: boolean,
+  completed?: boolean,
   letters?: [LetterContext, LetterContext];
   answer: string;
   className?: string;
-  riddle: string;
+  question: string;
+  onSubmit: (guessValue: string) => any;
 }
 
-const Letters = ({ letters }: { letters: IProps['letters'] }) => (
+const Letters = ({ letters }: { letters: IProps['letters'] }) => (console.log(letters),
   <div className={styles.letters}>
     {letters && letters.map((letter, idx) => (
       <LetterCard key={idx} backgroundColor={letter.backgroundColor}>{letter.letter}</LetterCard>
@@ -23,9 +24,10 @@ const Letters = ({ letters }: { letters: IProps['letters'] }) => (
   </div>
 );
 
-export default function HintCodeCard({ code, unlocked, letters, answer, riddle, className = '' }: IProps) {
+export default function HintCodeCard({ code, completed, letters, answer, question, className = '', onSubmit }: IProps) {
   const wordedAnswers = answer.split(' ');
-  const [guess, updateGuess] = useState(unlocked ? wordedAnswers : new Array(wordedAnswers.length).fill(''));
+  const [guess, updateGuess] = useState(completed ? wordedAnswers : new Array(wordedAnswers.length).fill(''));
+
   const onGuessUpdate = (idx: number) => (str: string) => {
     const newGuess = [...guess];
     newGuess[idx] = str;
@@ -43,14 +45,14 @@ export default function HintCodeCard({ code, unlocked, letters, answer, riddle, 
           disabled
           style={{ flexGrow: 1 }}
         />
-        {unlocked
+        {completed
           ? <Letters letters={letters} />
           : <div className={styles.locked}><Lock /></div>
         }
       </CardContent>
       <CardContent className={styles.cardContent} style={{ padding: '8px 16px'}}>
         <QuestionAnswer fontSize="large" />
-        <Typography style={{ flex: 1 }} className={styles.riddle}>{riddle}</Typography>
+        <Typography style={{ flex: 1 }} className={styles.riddle}>{question}</Typography>
       </CardContent>
       <CardContent style={{ padding: '8px 16px 24px'}}>
         <Divider />
@@ -62,19 +64,22 @@ export default function HintCodeCard({ code, unlocked, letters, answer, riddle, 
                 maxLength={word.length}
                 defaultValue={guess[idx]}
                 onChange={onGuessUpdate(idx)}
-                disabled={unlocked}
+                disabled={completed}
               />
             </div>
           )}
           <div style={{ width: 60, textAlign: 'right', flexShrink: 0 }}>
-            {unlocked
+            {completed
               ? <Check fontSize="large" color="primary" />
-              : <Fab
-                color="secondary"
-                size="small"
-                disabled={guess.length < answer.length}
-                children={<Send />}
-              />
+              : (
+                <Fab
+                  color="secondary"
+                  size="small"
+                  onClick={() => onSubmit(guess.join(' '))}
+                  disabled={guess.join(' ').length < answer.length}
+                  children={<Send />}
+                />
+              )
             }
           </div>
         </div>

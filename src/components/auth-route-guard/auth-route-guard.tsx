@@ -26,7 +26,7 @@ class AuthenticatedRouteGuard extends React.Component<IProps, { fetchingUser: bo
           }
           this.setState({ fetchingUser: false });
         })
-      }, 1000)
+      }, 2000)
     }
   }
 
@@ -34,7 +34,7 @@ class AuthenticatedRouteGuard extends React.Component<IProps, { fetchingUser: bo
     const { fetchingUser } = this.state;
     
     if (fetchingUser) {
-      return <CircularProgress />
+      return <CircularProgress size={100} />
     }
 
     if (getFirebaseAuth().currentUser) {

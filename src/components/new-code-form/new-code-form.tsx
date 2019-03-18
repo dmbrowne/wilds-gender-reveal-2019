@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Form, Field, FieldRenderProps } from 'react-final-form';
 import { TextField, Button, CardContent, Card, CircularProgress, Typography } from '@material-ui/core';
 
@@ -6,10 +6,6 @@ import * as validators from '../../validators';
 import { composeValidators } from '../../validators';
 import { green } from '@material-ui/core/colors';
 import { Check } from '@material-ui/icons';
-
-const onSubmit = (values: any) => {
-  console.table(values);
-}
 
 const Input = ({ meta, input, ...props }: FieldRenderProps<HTMLInputElement>) => (
   <TextField
@@ -36,11 +32,28 @@ const CompleteButtonContent = () => (
   </>
 );
 
-function NewCodeForm({ loading, complete }: { loading?: boolean, complete?: boolean }) {
+
+function NewCodeForm({ onSubmit }: { loading?: boolean, complete?: boolean, onSubmit: (values: any) => any}) {
+  const [loading, setLoading] = useState(false);
+  const [complete, setComplete] = useState(false);
   const codeValidation = composeValidators(validators.required, validators.minLength(4));
+  
+  const onCodeSubmission = (values: any) => {
+    setLoading(true);
+    onSubmit(values)
+      .then(() => {
+        setLoading(false);
+        setComplete(true);
+      })
+      .catch(() => {
+        setLoading(false);
+        setComplete(false);
+      })
+  }
+
   return (
     <Form
-      onSubmit={onSubmit}
+      onSubmit={onCodeSubmission}
       render={({ handleSubmit, pristine, invalid }) => (
         <form onSubmit={handleSubmit}>
           <Field

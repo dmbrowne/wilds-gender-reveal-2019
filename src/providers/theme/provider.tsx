@@ -78,7 +78,7 @@ class ThemeProvider extends Component<IProps, IState> {
     const { selectedTeam } = props.teamContext;
     const defaultTheme = selectedTeam && selectedTeam.id
       ? __getThemeBasedOnId(selectedTeam && selectedTeam.id)
-      : 'mr';
+      : props.theme || 'mr';
 
     this.state = {
       activeColorPalette: defaultTheme === 'mr' ? green : purple,

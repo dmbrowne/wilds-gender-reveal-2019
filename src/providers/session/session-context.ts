@@ -10,9 +10,11 @@ export interface ISession {
 export interface IContext {
   currentSession: ISession | null;
   setCurrentSession: (session: any) => any;
+  currentSessionById: (id: string) => any;
 }
 
 export default React.createContext<IContext>({
   currentSession: null,
   setCurrentSession: () => {},
+  currentSessionById: () => {},
 })

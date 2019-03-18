@@ -1,39 +1,48 @@
 import React from 'react'
-import GenderLogo from '../../components/team-logo/team-logo';
+import { AppBar, Toolbar, IconButton, Typography, Fab, LinearProgress, Divider, Button } from '@material-ui/core';
+import { Menu } from '@material-ui/icons';
+
 import { withTeamTheme } from '../../providers/theme';
 import { IWithTeamThemeProps } from '../../providers/theme/withTeamTheme';
-import HintCodeCard from '../../components/hint-code-card/hint-code-card';
-import { AppBar, Toolbar, IconButton, Typography, Fab, LinearProgress, Divider, Button } from '@material-ui/core';
-import { Menu, Add } from '@material-ui/icons';
 
-import styles from './scavenger-hunt.module.css';
+import GenderLogo from '../../components/team-logo/team-logo';
+import HintCodeCard from '../../components/hint-code-card/hint-code-card';
 import ActionButtonModal from '../../components/action-button-modal';
 import NewCodeForm from '../../components/new-code-form/new-code-form';
 import TeamAvatar from '../../components/team-avatar';
 import { LetterContext } from '../../components/letter-card/letter-card';
 
+import styles from './scavenger-hunt.module.css';
+
 interface IProps extends IWithTeamThemeProps {
   totalClues: number;
   cluesFound: number;
+  complete: boolean;
+  onAddCode: (code: string) => any;
   clues: Array<{
     unlocked: boolean;
     code: string;
-    letters: [LetterContext, LetterContext];
+    meta:{
+      letters: {
+        [id: string]: LetterContext;
+      }
+    }
     answer: string;
-    riddle: string;
+    question: string;
     [key: string]: any;
   }>
-  opposingTeam: {
+  opposingTeam?: {
     totalClues: number;
     cluesFound: number;
-  }
+  },
+  onGuessSuccess: (questionId: string) => any;
 }
 
-function ScavengerHunt({ teamThemeProps, totalClues, cluesFound, opposingTeam, clues }: IProps) {
+function ScavengerHuntComponent({ teamThemeProps, totalClues, complete, cluesFound, opposingTeam, clues, onGuessSuccess, onAddCode }: IProps) {
   const { palette: { primary: oppositePrimaryColor } } = teamThemeProps.getOpposingTeamThemeStyles();
   const oppositeTeam = teamThemeProps.currentTeam === 'mr' ? 'mrs' : 'mr'
   const allCluesFound = totalClues === cluesFound;
-  const allCluesSolved = clues.every(clue => clue.unlocked);
+
   return (
     <div className={styles.container}>
       <AppBar position="fixed">
@@ -46,12 +55,14 @@ function ScavengerHunt({ teamThemeProps, totalClues, cluesFound, opposingTeam, c
           </Typography>
         </Toolbar>
       </AppBar>
-      <aside className={styles.opposingScores}>
-        <Typography variant="caption" style={{ color: oppositePrimaryColor.main, marginRight: 8 }}>
-          {opposingTeam.cluesFound} of {opposingTeam.totalClues} clues found
-        </Typography>
-        <TeamAvatar theme={oppositeTeam} progress={(opposingTeam.cluesFound / opposingTeam.totalClues) * 100} />
-      </aside>
+      {!!opposingTeam && (
+        <aside className={styles.opposingScores}>
+          <Typography variant="caption" style={{ color: oppositePrimaryColor.main, marginRight: 8 }}>
+            {opposingTeam.cluesFound} of {opposingTeam.totalClues} clues found
+          </Typography>
+          <TeamAvatar theme={oppositeTeam} progress={(opposingTeam.cluesFound / opposingTeam.totalClues) * 100} />
+        </aside>
+      )}
       <Divider variant="middle" style={{ marginTop: 8, marginBottom: 8 }} />
       <section className={styles.content}>
         <div className={styles.header}>
@@ -64,8 +75,8 @@ function ScavengerHunt({ teamThemeProps, totalClues, cluesFound, opposingTeam, c
               {allCluesFound
                 ? (
                   <div>
-                    <Typography color={allCluesSolved ? 'primary' : 'default'} component="span" variant="h6">All clues {allCluesSolved ? 'solved!' : 'found'}</Typography>
-                    {allCluesSolved
+                    <Typography color={complete ? 'primary' : 'default'} component="span" variant="h6">All clues {complete ? 'solved!' : 'found'}</Typography>
+                    {complete
                       ? <Button color="primary" variant="outlined" size="small">Continue</Button>
                       : <Typography color="primary" component="span" variant="caption">solve the riddles to continue</Typography>
                     }
@@ -86,18 +97,42 @@ function ScavengerHunt({ teamThemeProps, totalClues, cluesFound, opposingTeam, c
           </div>
         </div>
         <div className={styles.hintCards}>
-          {clues.map(clue => (
-            <HintCodeCard className={styles.hintCard} {...clue} />
-          ))}
+          {clues
+            .filter(({ unlockedAt }) => !!unlockedAt)
+            .map(clue => {
+              const letters = clue.meta && clue.meta.letters && Object.keys(clue.meta.letters).map(id => ({
+                id,
+                ...clue.meta.letters[id]
+              })) || [{},{}]
+              return (
+                <HintCodeCard
+                  {...clue}
+                  letters={[letters[0], letters[1]]}
+                  key={clue.id}
+                  className={styles.hintCard}
+                  completed={!!clue.completedAt}
+                  onSubmit={(guess: string) => {
+                    if (guess === clue.answer) {
+                      onGuessSuccess(clue.id)
+                    }
+                  }}
+                />
+              )
+            })
+          }
         </div>
         <Button color="primary" variant="contained" size="large" fullWidth>Continue</Button>
       </section>
-      {allCluesSolved && (
+      {complete && (
         <ActionButtonModal
           title="Add a new hint"
           textContent="Enter the code to get a riddle..."
           actions={{
-            render: () => <div style={{ marginTop: 16 }}><NewCodeForm /></div>
+            render: () => (
+              <div style={{ marginTop: 16 }}>
+                <NewCodeForm onSubmit={({code}) => onAddCode(code)} />
+              </div>
+            )
           }}
         />
       )}
@@ -105,4 +140,6 @@ function ScavengerHunt({ teamThemeProps, totalClues, cluesFound, opposingTeam, c
   )
 }
 
-export default withTeamTheme(ScavengerHunt);
+const ScavengerHunt = withTeamTheme(ScavengerHuntComponent);
+
+export default ScavengerHunt

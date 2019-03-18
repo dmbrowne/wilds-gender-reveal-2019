@@ -48,14 +48,15 @@ class AutoSessionComponent extends Component<IProps> {
         if (!gameplaySessionId) {
           throw new Error(`${errorPrefix}, team does not have gameplaySession for this session`);
         }
-        return realtimeDatabase().ref(`gameplaySessions/${gameplaySessionId}`).once('value');
+        gameplaySessionContext.setGameplaySessionById(gameplaySessionId)
+        // return realtimeDatabase().ref(`gameplaySessions/${gameplaySessionId}`).once('value');
       })
-      .then(gameplaySession => {
-        if (!gameplaySession.exists()) {
-          throw new Error(`${errorPrefix}, gameplay session cannot be found with key: ${gameplaySession.key}`);
-        }
-        gameplaySessionContext.setGameplaySession({ id: gameplaySession.key, ...gameplaySession.val() })
-      })
+      // .then(gameplaySession => {
+      //   if (!gameplaySession.exists()) {
+      //     throw new Error(`${errorPrefix}, gameplay session cannot be found with key: ${gameplaySession.key}`);
+      //   }
+      //   gameplaySessionContext.setGameplaySessionById({ id: gameplaySession.key, ...gameplaySession.val() })
+      // })
   }
   
   render() {

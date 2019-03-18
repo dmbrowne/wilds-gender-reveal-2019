@@ -1,12 +1,12 @@
 import * as React from 'react'
 import Confetti from 'react-confetti'
-import { withTheme, Theme, IconButton, Typography } from '@material-ui/core';
+import { withTheme, Theme, IconButton, Typography, WithTheme } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
 import { ReactComponent as Trophy } from './icons/trophy.svg'
 import styles from './game-won.module.css';
+import { ThemedComponentProps } from '@material-ui/core/styles/withTheme';
 
-interface IProps {
-  theme: Theme;
+interface IProps extends WithTheme {
   onClose: () => any;
   points: number;
 }
@@ -59,7 +59,7 @@ function GameWon({ theme, onClose, points }: IProps) {
         </main>
       </Content>
       <footer className={styles.footer}>
-        <Typography>Your team has earned <Typography inline color="primary">+{points}</Typography> points</Typography>
+        <Typography>Your team has earned <Typography component="span" inline color="primary">+{points}</Typography> points</Typography>
       </footer>
     </div>
   )

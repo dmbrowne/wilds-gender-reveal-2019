@@ -19,7 +19,7 @@ export default function SeparatedCharacterTextFields({ defaultValue, maxLength, 
       maxLength={maxLength}
       onChange={onChange}
       spacing={spacing}
-      renderCharacterInput={(character, onchange, { ref, ...inputProps }) => (console.log(character), 
+      renderCharacterInput={(character, onchange, { ref, ...inputProps }) => (
         <FilledInput
           key={`SeparatedCharacterInput`}
           disabled={disabled}
