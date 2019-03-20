@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react';
 import cx from 'classnames';
 import { withTeamTheme } from '../../providers/theme';
 import { LetterContext } from '../../components/letter-card/letter-card';
@@ -16,7 +16,7 @@ interface Hint {
   unlocked: boolean;
 }
 
-interface IFetchedLetterContext extends LetterContext{
+interface IFetchedLetterContext extends LetterContext {
   id: string;
 }
 
@@ -28,14 +28,37 @@ interface IProps extends IWithTeamThemeProps {
   onSolveSuccess: () => any;
 }
 
-type ChosenLetters = IFetchedLetterContext | null
+type ChosenLetters = IFetchedLetterContext | null;
 
-function SolveMysteryWordScreen({ teamThemeProps, letters, answer, hints, onSolveSuccess }: IProps) {
+function SolveMysteryWordScreen({
+  teamThemeProps,
+  letters,
+  answer,
+  solved,
+  hints,
+  onSolveSuccess,
+}: IProps) {
   const genderThemeColor = teamThemeProps.currentTeam === 'mr' ? green : purple;
   const [activeIndex, updateSelectedIdx] = useState(0);
-  const [chosenLetters, changeChosenLetters] = useState<any>([])
+  const [chosenLetters, changeChosenLetters] = useState<any>([]);
   const hintsUsed = hints.filter(hint => hint.unlocked);
-  const valid = chosenLetters.length === answer.length && chosenLetters.every((letter: any) => !!letter);
+  const valid =
+    chosenLetters.length === answer.length &&
+    chosenLetters.every((letter: any) => !!letter);
+
+  useEffect(() => {
+    if (solved) {
+      const clonedLetters = [...letters];
+      changeChosenLetters(
+        answer.split('').map(answerLetter => {
+          const idx = clonedLetters.findIndex(
+            ({ letter }) => letter === answerLetter,
+          );
+          return clonedLetters.splice(idx, 1)[0];
+        }),
+      );
+    }
+  }, [solved]);
 
   const deleteGuessLetter = (idx: number) => {
     const updatedLetters = [...chosenLetters];
@@ -43,29 +66,44 @@ function SolveMysteryWordScreen({ teamThemeProps, letters, answer, hints, onSolv
     changeChosenLetters(updatedLetters);
   };
 
-  const updateChosenLetters = (idx: number, letterContext: IFetchedLetterContext) => {
+  const updateChosenLetters = (
+    idx: number,
+    letterContext: IFetchedLetterContext,
+  ) => {
     const updatedLetters = [...chosenLetters];
-    updatedLetters[idx] = {...letterContext};
+    updatedLetters[idx] = { ...letterContext };
     changeChosenLetters(updatedLetters);
-    updateSelectedIdx(activeIndex + 1)
+    updateSelectedIdx(activeIndex + 1);
   };
 
   const attemptSolve = () => {
     if (chosenLetters.length > 0) {
       const word = chosenLetters
-        .map((chosenLetter: any) => chosenLetter && chosenLetters.letter)
-        .filter((letter: string) => !!letter);
+        .map((chosenLetter: any) => chosenLetter && chosenLetter.letter)
+        .filter((letter: string) => !!letter)
+        .join('');
+
       if (word === answer) {
         onSolveSuccess();
       }
     }
-  }
+  };
 
   return (
-    <div className={styles.root} style={{ backgroundColor: genderThemeColor[50] }}>
+    <div
+      className={styles.root}
+      style={{ backgroundColor: genderThemeColor[50] }}
+    >
       <SolveMysteryWordHeader />
       <main className={styles.main}>
-        <Typography variant="display1" gutterBottom align="center" style={{ color: '#fff' }}>Solve the mystery word</Typography>
+        <Typography
+          variant="display1"
+          gutterBottom
+          align="center"
+          style={{ color: '#fff' }}
+        >
+          Solve the mystery word
+        </Typography>
         <Typography
           className={cx(styles.container, styles.centeredText)}
           variant="subheading"
@@ -73,6 +111,7 @@ function SolveMysteryWordScreen({ teamThemeProps, letters, answer, hints, onSolv
         />
         <div className={cx(styles.container, styles.chalkboard)}>
           <ChalkboardGuess
+            disabled={solved}
             selectedIdx={activeIndex}
             onItemClick={updateSelectedIdx}
             letters={chosenLetters}
@@ -82,7 +121,14 @@ function SolveMysteryWordScreen({ teamThemeProps, letters, answer, hints, onSolv
           />
         </div>
         <div className={styles.submitButtonContainer}>
-          <Button size="large" color="primary" onClick={attemptSolve} variant="contained" fullWidth disabled={!valid}>
+          <Button
+            size="large"
+            color="primary"
+            onClick={attemptSolve}
+            variant="contained"
+            fullWidth
+            disabled={!valid || solved}
+          >
             Submit
           </Button>
         </div>
@@ -91,18 +137,22 @@ function SolveMysteryWordScreen({ teamThemeProps, letters, answer, hints, onSolv
           <SolveMysteryWordLetterDrawer
             letters={letters}
             chosenLetters={chosenLetters}
-            onLetterClick={letterContext => updateChosenLetters(activeIndex, letterContext)}
+            onLetterClick={letterContext =>
+              updateChosenLetters(activeIndex, letterContext)
+            }
           />
         </div>
         <Divider variant="middle" />
         <div className={cx(styles.centeredText, styles.container)}>
-          <SolveMysteryWordHints hintsUsed={hintsUsed} totalHints={hints.length} />
+          <SolveMysteryWordHints
+            hintsUsed={hintsUsed}
+            totalHints={hints.length}
+          />
         </div>
       </main>
     </div>
-  )
+  );
 }
-
 
 const SolveMysteryWord = withTheme()(withTeamTheme(SolveMysteryWordScreen));
 

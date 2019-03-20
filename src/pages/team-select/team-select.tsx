@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import { Button, CircularProgress } from '@material-ui/core';
 
 import { withTeamTheme } from '../../providers/theme';
@@ -14,18 +14,28 @@ import useTeams from '../../hooks/teams';
 import { getFirebaseAuth } from '../../firebase';
 import PlayerEntry from './player-entry';
 
-interface IProps extends IWithUserContext, IWithTeamThemeProps, IWithTeamContext, RouteComponentProps {};
+interface IProps
+  extends IWithUserContext,
+    IWithTeamThemeProps,
+    IWithTeamContext,
+    RouteComponentProps {}
 
-const TeamSelectionPage: React.FC<IProps> = ({ userContext, teamContext, teamThemeProps, history }) => {
+const TeamSelectionPage: React.FC<IProps> = ({
+  userContext,
+  teamContext,
+  teamThemeProps,
+  history,
+}) => {
   const teams = useTeams();
-  const [progressStage, setProgressStage] = useState('teamselect')
-  const [height, setHeight] = useState(window.innerHeight)
+  const [progressStage, setProgressStage] = useState('teamselect');
+  const [height, setHeight] = useState(window.innerHeight);
   const [teamConfirmed, confirmTeam] = useState<string | false>();
-  const teamContextId = teamContext.selectedTeam && teamContext.selectedTeam.id || '';
+  const teamContextId =
+    (teamContext.selectedTeam && teamContext.selectedTeam.id) || '';
 
   const onSuccess = () => {
-    teamContext.saveSelectedTeam().then(() => history.push('/'))
-  }
+    teamContext.saveSelectedTeam().then(() => history.push('/'));
+  };
 
   const getStageContent = () => {
     switch (progressStage) {
@@ -35,32 +45,40 @@ const TeamSelectionPage: React.FC<IProps> = ({ userContext, teamContext, teamThe
             onBackClick={() => setProgressStage('teamselect')}
             onSuccess={() => onSuccess()}
           />
-        )
+        );
       case 'teamConfirm':
-        return teamContext.selectedTeam && (
-          <Button onClick={() => {
-            teamContext.saveSelectedTeam().then(() => console.log('success'))
-          }}>Confirm {teamContext.selectedTeam.name}</Button>
-        )
+        return (
+          teamContext.selectedTeam && (
+            <Button
+              onClick={() => {
+                teamContext
+                  .saveSelectedTeam()
+                  .then(() => console.log('success'));
+              }}
+            >
+              Confirm {teamContext.selectedTeam.name}
+            </Button>
+          )
+        );
       case 'teamselect':
       default:
         return null;
     }
-  }
+  };
   useEffect(() => {
     setTimeout(() => {
       if (window.innerHeight !== height) {
-        setHeight(window.innerHeight)
+        setHeight(window.innerHeight);
       }
-    }, 0)
+    }, 0);
   });
 
   const chooseTeam = (team: any) => {
     teamContext.setSelectedTeam(team);
-  }
+  };
 
   if (!teams) {
-    return <CircularProgress size={50} />
+    return <CircularProgress size={50} />;
   }
 
   return (
@@ -71,9 +89,9 @@ const TeamSelectionPage: React.FC<IProps> = ({ userContext, teamContext, teamThe
         selectedTeamId={teamContextId}
         onSelectTeam={chooseTeam}
         showConfirm={teamConfirmed}
-        bodyContent={() => getStageContent()}
+        // bodyContent={() => getStageContent()}
       />
-      {!!teamContextId && !teamConfirmed &&
+      {!!teamContextId && !teamConfirmed && (
         <div className={styles.footerContent}>
           <Button
             size="large"
@@ -87,9 +105,9 @@ const TeamSelectionPage: React.FC<IProps> = ({ userContext, teamContext, teamThe
             Continue
           </Button>
         </div>
-      }
+      )}
     </div>
-  )
-}
+  );
+};
 
 export default withUser(withTeam(withTeamTheme(TeamSelectionPage)));

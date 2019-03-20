@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "wilds-gender-reveal-19"
+  },
+  "targets": {
+    "wilds-gender-reveal-19": {
+      "hosting": {
+        "storybook": [
+          "wgr-storybook"
+        ]
+      }
+    }
+  }
+}

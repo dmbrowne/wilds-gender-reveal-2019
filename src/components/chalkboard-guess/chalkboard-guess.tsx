@@ -5,7 +5,6 @@ import { LetterContext } from '../letter-card/letter-card';
 import LetterPlaceholder from './letter-placeholder';
 import Chalkboard from '../chalkboard/chalkboard';
 
-
 interface IProps {
   selectedIdx: number;
   onItemClick: (idx: number) => any;
@@ -13,9 +12,18 @@ interface IProps {
   maxLength: number;
   letters: Array<LetterContext | null>;
   getItemKey: (item: any) => string;
+  disabled: boolean;
 }
 
-export default function ChalkboardGuess({ selectedIdx, onItemClick, letters, maxLength, onDelete, getItemKey }: IProps) {
+export default function ChalkboardGuess({
+  selectedIdx,
+  onItemClick,
+  letters,
+  maxLength,
+  onDelete,
+  getItemKey,
+  disabled,
+}: IProps) {
   return (
     <Chalkboard className={styles.root}>
       <div className={styles.content}>
@@ -24,17 +32,22 @@ export default function ChalkboardGuess({ selectedIdx, onItemClick, letters, max
           return (
             <LetterPlaceholder
               key={letter ? getItemKey(letter) : idx}
-              onDelete={() => onDelete(idx)}
-              onClick={() => onItemClick(idx)}
-              active={selectedIdx === idx}
-              render={() => !!letter
-                ? <LetterCard children={letter.letter} backgroundColor={letter.backgroundColor} />
-                : null
+              onDelete={() => !disabled && onDelete(idx)}
+              onClick={() => !disabled && onItemClick(idx)}
+              active={disabled ? false : selectedIdx === idx}
+              hideUndo={disabled}
+              render={() =>
+                !!letter ? (
+                  <LetterCard
+                    children={letter.letter}
+                    backgroundColor={letter.backgroundColor}
+                  />
+                ) : null
               }
             />
-          )
+          );
         })}
       </div>
     </Chalkboard>
-  )
+  );
 }
