@@ -1,3 +1,7 @@
+.signUpFormContainer {
+  overflow: hidden;
+}
+
 .displayNameAndPassword {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -5,5 +9,28 @@
 }
 
 .button {
-  margin: 16px 0;
+  margin: 16px 0 24px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.formTypeSwitcher {
+  width: 200%;
+  transform: translate3d(0, 0, 0);
+  transition: transform 400ms;
+}
+
+.formTypeSwitcher.switch {
+  transform: translate3d(-50%, 0, 0);
+}
+
+.formTypeSwitcher:after {
+  clear: both;
+  display: block;
+  content: "";
+}
+
+.formTypeSwitcher > * {
+  width: 50%;
+  float: left;
 }

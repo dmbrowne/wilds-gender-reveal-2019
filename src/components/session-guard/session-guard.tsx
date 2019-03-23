@@ -1,18 +1,17 @@
-import * as React from 'react'
-import { withRouter, RouteComponentProps, Route } from 'react-router';
-import { withSession } from '../../providers/session';
-import withGameplaySession, { IWithGameplaySessionContext } from '../../providers/gameplay-session/consumer';
-import compose from '../../utils/compose';
-import { IWithSessionContext } from '../../providers/session/session-consumer';
-import Dashboard from '../../pages/home';
+import * as React from "react";
+import { withRouter, RouteComponentProps, Route } from "react-router";
+import { withSession } from "../../providers/session";
+import withGameplaySession, { IWithGameplaySessionContext } from "../../providers/gameplay-session/consumer";
+import compose from "../../utils/compose";
+import { IWithSessionContext } from "../../providers/session/session-consumer";
+import Dashboard from "../../pages/home";
 
-interface IProps extends 
-  IWithGameplaySessionContext,
-  IWithSessionContext,
-  RouteComponentProps<{ sessionId: string, gameplaySessionId: string }>
-{
+interface IProps
+  extends IWithGameplaySessionContext,
+    IWithSessionContext,
+    RouteComponentProps<{ sessionId: string; gameplaySessionId: string }> {
   redirectUrl: string;
-  Component: React.ComponentType<RouteComponentProps<{ sessionId: string, gameplaySessionId: string }>>
+  Component: React.ComponentType<RouteComponentProps<{ sessionId: string; gameplaySessionId: string }>>;
 }
 
 class SessionGuardComponent extends React.Component<IProps> {
@@ -34,12 +33,14 @@ class SessionGuardComponent extends React.Component<IProps> {
       return null;
     }
 
-    return (
-      <Component {...props} history={history} />
-    )
+    return <Component {...props} history={history} />;
   }
 }
 
-const SessionGuard = compose(withRouter, withSession, withGameplaySession)(SessionGuardComponent);
+const SessionGuard = compose(
+  withRouter,
+  withSession,
+  withGameplaySession
+)(SessionGuardComponent);
 
 export default SessionGuard;

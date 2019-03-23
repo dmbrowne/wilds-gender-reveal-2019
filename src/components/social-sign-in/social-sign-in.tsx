@@ -1,21 +1,52 @@
-import React from 'react'
-import { Button } from '@material-ui/core';
-import { ReactComponent as GoogleIcon } from './icons/google.svg';
-import { ReactComponent as TwitterIcon } from './icons/twitter.svg';
-import { ReactComponent as FacebookIcon } from './icons/facebook-square.svg';
+import React, { useState } from "react";
+import { Button, CircularProgress } from "@material-ui/core";
+import { ReactComponent as GoogleIcon } from "./icons/google.svg";
+import { ReactComponent as TwitterIcon } from "./icons/twitter.svg";
+import { ReactComponent as FacebookIcon } from "./icons/facebook-square.svg";
 
-import styles from './social-sign-in.module.css';
-import firebase from '../../firebase';
+import styles from "./social-sign-in.module.css";
+import firebase from "../../firebase";
+import CustomSnackbar from "../snackbar/snackbar";
+import { addUserDisplayNametoUserCollection } from "../auth-entry/utils";
 
-export default function SocialSignIn({ title, onSignIn }: { title?: string, onSignIn?: () => any }) {
+type SocialProvider =
+  | firebase.auth.FacebookAuthProvider
+  | firebase.auth.TwitterAuthProvider
+  | firebase.auth.GoogleAuthProvider;
+
+export default function SocialSignIn({ title, onSignIn }: { title?: string; onSignIn?: () => any }) {
+  const [isSignInPending, setIsSignInPending] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const facebookProvider = new firebase.auth.FacebookAuthProvider();
   const googleProvider = new firebase.auth.GoogleAuthProvider();
   const twitterProvider = new firebase.auth.TwitterAuthProvider();
 
-  const signInWithAuthProvider = (provider: any) => () => {
-    firebase.auth()
+  const signInWithAuthProvider = (provider: SocialProvider) => () => {
+    setIsSignInPending(true);
+    firebase
+      .auth()
       .signInWithPopup(provider)
-      .then(() => onSignIn && onSignIn())
+      .then(({ user }) => {
+        setIsSignInPending(false);
+        if (user) {
+          addUserDisplayNametoUserCollection(user.uid, user.displayName || "").then(() => {
+            onSignIn && onSignIn();
+          });
+        }
+      })
+      .catch(e => {
+        setIsSignInPending(false);
+        setErrorMessage(e.message);
+        console.error(e);
+      });
+  };
+
+  if (isSignInPending) {
+    return (
+      <div>
+        <CircularProgress />
+      </div>
+    );
   }
 
   return (
@@ -46,7 +77,15 @@ export default function SocialSignIn({ title, onSignIn }: { title?: string, onSi
         >
           <TwitterIcon />
         </Button>
+        <CustomSnackbar
+          autoHideDuration={null}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={!!errorMessage}
+          variant="error"
+          message={errorMessage}
+          onClose={() => setErrorMessage("")}
+        />
       </section>
     </>
-  )
+  );
 }

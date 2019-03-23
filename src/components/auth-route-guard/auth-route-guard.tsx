@@ -1,8 +1,9 @@
-import * as React from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { withUser, IWithUserContext } from '../../providers/user/user-consumer';
-import { CircularProgress } from '@material-ui/core';
-import { getFirebaseAuth } from '../../firebase';
+import * as React from "react";
+import { withRouter, RouteComponentProps } from "react-router-dom";
+import { withUser, IWithUserContext } from "../../providers/user/user-consumer";
+import { CircularProgress } from "@material-ui/core";
+import { getFirebaseAuth } from "../../firebase";
+import PageSpinner from "../page-spinner";
 
 interface IProps extends IWithUserContext, RouteComponentProps {
   redirectUrl: string;
@@ -10,8 +11,8 @@ interface IProps extends IWithUserContext, RouteComponentProps {
 
 class AuthenticatedRouteGuard extends React.Component<IProps, { fetchingUser: boolean }> {
   state = {
-    fetchingUser: false,
-  }
+    fetchingUser: false
+  };
 
   componentDidMount() {
     const { userContext, redirectUrl, history } = this.props;
@@ -20,30 +21,29 @@ class AuthenticatedRouteGuard extends React.Component<IProps, { fetchingUser: bo
 
       setTimeout(() => {
         userContext.getCurrentUser().then(user => {
-
           if (!user && !getFirebaseAuth().currentUser) {
-            history.push(redirectUrl)
+            history.push(redirectUrl);
           }
           this.setState({ fetchingUser: false });
-        })
-      }, 2000)
+        });
+      }, 2000);
     }
   }
 
   render() {
     const { fetchingUser } = this.state;
-    
+
     if (fetchingUser) {
-      return <CircularProgress size={100} />
+      return <PageSpinner children="Finding your account" />;
     }
 
     if (getFirebaseAuth().currentUser) {
-      return <>{this.props.children}</>
+      return <>{this.props.children}</>;
     }
 
     return null;
   }
 }
 
-const AuthRouteGuard = withRouter(withUser(AuthenticatedRouteGuard))
+const AuthRouteGuard = withRouter(withUser(AuthenticatedRouteGuard));
 export default AuthRouteGuard;

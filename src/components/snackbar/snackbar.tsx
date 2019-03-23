@@ -6,29 +6,34 @@ import { SnackbarOrigin } from "@material-ui/core/Snackbar";
 interface IProps extends ISnackbarProps {
   open: boolean;
   anchorOrigin?: SnackbarOrigin;
-  autoHideDuration?: number;
+  autoHideDuration?: number | null;
 }
 
-const CustomSnackbar: React.FC<IProps> = ({ autoHideDuration, anchorOrigin, open, onClose, variant, message }) => (
+const CustomSnackbar: React.FC<IProps> = ({
+  autoHideDuration,
+  anchorOrigin,
+  open,
+  onClose,
+  variant,
+  message,
+  ...props
+}) => (
   <Snackbar
     anchorOrigin={anchorOrigin}
     open={open}
-    autoHideDuration={autoHideDuration}
+    autoHideDuration={autoHideDuration as any}
     onClose={onClose}
+    {...props}
   >
-    <CustomSnackbarContent
-      onClose={onClose}
-      variant={variant}
-      message={message}
-    />
+    <CustomSnackbarContent onClose={onClose} variant={variant} message={message} />
   </Snackbar>
 );
 
 CustomSnackbar.defaultProps = {
   autoHideDuration: 6000,
   anchorOrigin: {
-    vertical: 'bottom',
-    horizontal: 'left',
+    vertical: "bottom",
+    horizontal: "left"
   }
 };
 

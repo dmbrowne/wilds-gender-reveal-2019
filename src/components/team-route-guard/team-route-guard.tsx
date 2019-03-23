@@ -1,11 +1,12 @@
-import * as React from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { withUser, IWithUserContext } from '../../providers/user/user-consumer';
-import { CircularProgress } from '@material-ui/core';
-import gameconfig from '../../gameconfig';
-import withTeam, { IWithTeamContext } from '../../providers/team/team-consumer';
-import { getFirestore, getFirebaseAuth } from '../../firebase';
-import { User } from 'firebase';
+import * as React from "react";
+import { withRouter, RouteComponentProps } from "react-router-dom";
+import { withUser, IWithUserContext } from "../../providers/user/user-consumer";
+import { CircularProgress } from "@material-ui/core";
+import gameconfig from "../../gameconfig";
+import withTeam, { IWithTeamContext } from "../../providers/team/team-consumer";
+import { getFirestore, getFirebaseAuth } from "../../firebase";
+import { User } from "firebase";
+import PageSpinner from "../page-spinner";
 
 interface IProps extends IWithUserContext, IWithTeamContext, RouteComponentProps {
   redirectUrl: string;
@@ -13,27 +14,27 @@ interface IProps extends IWithUserContext, IWithTeamContext, RouteComponentProps
 
 class TeamRouteGuardComponent extends React.Component<IProps, { fetchingTeam: boolean }> {
   state = {
-    fetchingTeam: false,
-  }
+    fetchingTeam: false
+  };
 
-  competitionRef = getFirestore('competitions').doc(gameconfig.competitionId);
+  competitionRef = getFirestore("competitions").doc(gameconfig.competitionId);
 
   getUserTeamId(userId: string) {
     return this.competitionRef
-      .collection('teamMembers')
-      .where('user', '==', getFirestore('users').doc(userId))
+      .collection("teamMembers")
+      .where("user", "==", getFirestore("users").doc(userId))
       .get()
-      .then((querySnapshot) => {
+      .then(querySnapshot => {
         if (!querySnapshot.empty) {
           return querySnapshot.docs[0].data().team.id;
         }
         return null;
-      })
+      });
   }
 
   getTeam(teamId: string) {
     return this.competitionRef
-      .collection('teams')
+      .collection("teams")
       .doc(teamId)
       .get()
       .then(documentSnapshot => {
@@ -42,16 +43,16 @@ class TeamRouteGuardComponent extends React.Component<IProps, { fetchingTeam: bo
         }
         return {
           id: documentSnapshot.id,
-          ...documentSnapshot.data(),
-        }
-      })
+          ...documentSnapshot.data()
+        };
+      });
   }
 
   async getUserTeam(user: User) {
-    const teamId = await this.getUserTeamId(user.uid)
-    if (!teamId) throw Error('no teamId found for user');
+    const teamId = await this.getUserTeamId(user.uid);
+    if (!teamId) throw Error("no teamId found for user");
     const team = await this.getTeam(teamId);
-    if (!team) throw Error('team doesnt exist under competition');
+    if (!team) throw Error("team doesnt exist under competition");
     return team;
   }
 
@@ -68,7 +69,7 @@ class TeamRouteGuardComponent extends React.Component<IProps, { fetchingTeam: bo
         .catch((e: Error) => {
           console.info(e.message);
           history.push(redirectUrl);
-        })
+        });
     }
   }
 
@@ -77,7 +78,7 @@ class TeamRouteGuardComponent extends React.Component<IProps, { fetchingTeam: bo
     const { teamContext, children } = this.props;
 
     if (fetchingTeam) {
-      return <CircularProgress />
+      return <PageSpinner children="Getting your team..." color="secondary" />;
     }
 
     if (teamContext.selectedTeam) {
@@ -88,8 +89,6 @@ class TeamRouteGuardComponent extends React.Component<IProps, { fetchingTeam: bo
   }
 }
 
-const TeamRouteGuard = withRouter(withUser(
-  withTeam(TeamRouteGuardComponent)
-))
+const TeamRouteGuard = withRouter(withUser(withTeam(TeamRouteGuardComponent)));
 
 export default TeamRouteGuard;

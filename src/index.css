@@ -2,23 +2,20 @@
 
 @font-face {
   font-family: "Tally Mark";
-  src: url("/assets/tallymark.otf") format("opentype"),
-      url("/assets/tallymark.ttf") format("truetype");
+  src: url("/assets/tallymark.otf") format("opentype"), url("/assets/tallymark.ttf") format("truetype");
 }
 
 body {
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Lato', 'Roboto', 'Oxygen', 'San Francisco',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Lato", "Roboto", "Oxygen", "San Francisco", "Ubuntu", "Cantarell",
+    "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-kerning: none;
-  background: '#eee';
+  background: #eee;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }

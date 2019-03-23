@@ -1,9 +1,9 @@
-import React from 'react';
-import styles from './chalkboard-guess.module.css';
-import LetterCard from '../letter-card';
-import { LetterContext } from '../letter-card/letter-card';
-import LetterPlaceholder from './letter-placeholder';
-import Chalkboard from '../chalkboard/chalkboard';
+import React from "react";
+import styles from "./chalkboard-guess.module.css";
+import LetterCard from "../letter-card";
+import { LetterContext } from "../letter-card/letter-card";
+import LetterPlaceholder from "./letter-placeholder";
+import Chalkboard from "../chalkboard/chalkboard";
 
 interface IProps {
   selectedIdx: number;
@@ -22,12 +22,12 @@ export default function ChalkboardGuess({
   maxLength,
   onDelete,
   getItemKey,
-  disabled,
+  disabled
 }: IProps) {
   return (
     <Chalkboard className={styles.root}>
       <div className={styles.content}>
-        {new Array(maxLength).fill('').map((_, idx) => {
+        {new Array(maxLength).fill("").map((_, idx) => {
           const letter = letters[idx];
           return (
             <LetterPlaceholder
@@ -37,12 +37,7 @@ export default function ChalkboardGuess({
               active={disabled ? false : selectedIdx === idx}
               hideUndo={disabled}
               render={() =>
-                !!letter ? (
-                  <LetterCard
-                    children={letter.letter}
-                    backgroundColor={letter.backgroundColor}
-                  />
-                ) : null
+                !!letter ? <LetterCard children={letter.letter} backgroundColor={letter.backgroundColor} /> : null
               }
             />
           );

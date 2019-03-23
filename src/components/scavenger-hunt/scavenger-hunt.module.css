@@ -1,6 +1,6 @@
 .container {
-  min-height: 100vmax;
-  background: #eee;
+  /* min-height: 100vmax; */
+  /* background: #eee; */
   padding-top: 56px;
   padding-bottom: calc(2.5vh + 56px);
 }
@@ -10,9 +10,8 @@
 }
 
 .header {
-  display: grid;
-  grid-template-columns: 0.3fr 0.7fr;
-  grid-gap: 16px;
+  display: flex;
+  justify-content: space-evenly;
 }
 
 .logo {

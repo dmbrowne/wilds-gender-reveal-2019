@@ -1,0 +1,10 @@
+.pageSpinner {
+  height: 300px;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}

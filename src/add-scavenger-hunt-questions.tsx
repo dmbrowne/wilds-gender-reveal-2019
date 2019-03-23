@@ -1,92 +1,95 @@
-import React from 'react'
-import { getFirestore } from './firebase';
-import { Button } from '@material-ui/core';
-
+import React from "react";
+import { getFirestore } from "./firebase";
+import { Button } from "@material-ui/core";
 
 const AddScavengerHuntQuestions = () => {
   const qs = [
     {
+      question: "What pulls you down and never lets go?",
+      answer: "Gravity",
+      game: getFirestore("games").doc("stf2551EJzAhP1oD6uyw"),
       order: 1,
-      question: "Joe’s father had three son’s Snap, Crackle and?",
-      answer: "Joe",
-      game: getFirestore('games').doc('J8BBrRmI5bXztCVng3dm'),
+      code: "15782",
       meta: {
         letters: {
-          gjrgirjidlg: {
-            letter: "I",
-            backgroundColor: "#f782c8",
+          svjvavcv: {
+            letter: "r",
+            backgroundColor: "#c80cce"
           },
-          EZT4D7IOLH: {
-            letter: "E",
-            backgroundColor: "#07283a",
+          aubsxsosj: {
+            letter: "t",
+            backgroundColor: "#ce0b79"
           }
         }
       }
     },
     {
+      question: "What goes up and down but never moves?",
+      answer: "Stairs",
+      game: getFirestore("games").doc("stf2551EJzAhP1oD6uyw"),
       order: 2,
-      question: "I am a mother’s child and a father’s child but nobody’s son. What am I?",
-      answer: "A daughter",
-      game: getFirestore('games').doc('J8BBrRmI5bXztCVng3dm'),
+      code: "26653",
       meta: {
         letters: {
-          ejfhwwwd: {
-            letter: "A",
-            backgroundColor: "#566935",
+          ansxand: {
+            letter: "o",
+            backgroundColor: "#081191"
           },
-          uitryds: {
-            letter: "F",
-            backgroundColor: "#07283a",
+          sjbxqubiu: {
+            letter: "e",
+            backgroundColor: "#e8ef10"
           }
         }
       }
     },
     {
+      question: "I have many keys but I cannot open a single lock. What am I?",
+      answer: "Piano",
       order: 3,
-      question: "What has a tongue but cannot talk and gets around a lot but cannot walk??",
-      answer: "A shoe",
-      game: getFirestore('games').doc('J8BBrRmI5bXztCVng3dm'),
+      code: "20899",
+      game: getFirestore("games").doc("stf2551EJzAhP1oD6uyw"),
       meta: {
         letters: {
-          yjgfdscv: {
-            letter: "P",
-            backgroundColor: "#f782c8",
+          dfztyku: {
+            letter: "r",
+            backgroundColor: "#0fb7ef"
           },
-          pvfdigcxv: {
-            letter: "I",
-            backgroundColor: "#316549",
+          xzertsxtr: {
+            letter: "l",
+            backgroundColor: "#5458d8"
           }
         }
       }
     },
     {
+      question: "What can you fill a room with that takes up no space?",
+      answer: "Light",
       order: 4,
-      question: "What has hands but can’t pick up anything?",
-      answer: "A clock",
-      game: getFirestore('games').doc('J8BBrRmI5bXztCVng3dm'),
+      code: "32905",
+      game: getFirestore("games").doc("stf2551EJzAhP1oD6uyw"),
       meta: {
         letters: {
-          cjkwrnvefd: {
-            letter: "C",
-            backgroundColor: "#4d0117",
+          dfztyku: {
+            letter: "r",
+            backgroundColor: "#8befd3"
           },
-          mjchsdigre: {
-            letter: "R",
-            backgroundColor: "#0a5055",
+          xzertsxtr: {
+            letter: "l",
+            backgroundColor: "#f4ac27"
           }
         }
       }
     }
   ];
-  
+
   const addQuestions = () => {
-    qs.map(q => getFirestore('questions').add(q))
-  }
+    qs.map(q => getFirestore("questions").add(q));
+  };
   return (
     <div>
       <Button onClick={() => addQuestions()}>Add Questions</Button>
     </div>
-  )
-}
+  );
+};
 
-export default AddScavengerHuntQuestions
+export default AddScavengerHuntQuestions;

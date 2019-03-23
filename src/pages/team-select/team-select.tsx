@@ -1,18 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { Button, CircularProgress } from '@material-ui/core';
+import React, { useState, useEffect } from "react";
+import { Button, CircularProgress } from "@material-ui/core";
+import cx from "classnames";
 
-import { withTeamTheme } from '../../providers/theme';
-import { IWithTeamThemeProps } from '../../providers/theme/withTeamTheme';
+import { withTeamTheme } from "../../providers/theme";
+import { IWithTeamThemeProps } from "../../providers/theme/withTeamTheme";
 
-import TeamSelect from '../../components/team-select';
-import styles from './team-select.module.css';
+import TeamSelect from "../../components/team-select";
+import styles from "./team-select.module.css";
 
-import { RouteComponentProps } from 'react-router';
-import withTeam, { IWithTeamContext } from '../../providers/team/team-consumer';
-import withUser, { IWithUserContext } from '../../providers/user/user-consumer';
-import useTeams from '../../hooks/teams';
-import { getFirebaseAuth } from '../../firebase';
-import PlayerEntry from './player-entry';
+import { RouteComponentProps } from "react-router";
+import withTeam, { IWithTeamContext } from "../../providers/team/team-consumer";
+import withUser, { IWithUserContext } from "../../providers/user/user-consumer";
+import useTeams from "../../hooks/teams";
+import { getFirebaseAuth } from "../../firebase";
+import PlayerEntry from "./player-entry";
 
 interface IProps
   extends IWithUserContext,
@@ -20,51 +21,35 @@ interface IProps
     IWithTeamContext,
     RouteComponentProps {}
 
-const TeamSelectionPage: React.FC<IProps> = ({
-  userContext,
-  teamContext,
-  teamThemeProps,
-  history,
-}) => {
+const TeamSelectionPage: React.FC<IProps> = ({ teamContext, history }) => {
   const teams = useTeams();
-  const [progressStage, setProgressStage] = useState('teamselect');
+  const [progressStage, setProgressStage] = useState("teamselect");
   const [height, setHeight] = useState(window.innerHeight);
   const [teamConfirmed, confirmTeam] = useState<string | false>();
-  const teamContextId =
-    (teamContext.selectedTeam && teamContext.selectedTeam.id) || '';
+  const teamContextId = (teamContext.selectedTeam && teamContext.selectedTeam.id) || "";
 
   const onSuccess = () => {
-    teamContext.saveSelectedTeam().then(() => history.push('/'));
+    teamContext.saveSelectedTeam().then(() => history.push("/"));
   };
 
   const getStageContent = () => {
     switch (progressStage) {
-      case 'entry':
+      case "entry":
         return (
           <PlayerEntry
-            onBackClick={() => setProgressStage('teamselect')}
             onSuccess={() => onSuccess()}
+            onBackClick={() => {
+              setProgressStage("teamselect");
+              confirmTeam(false);
+            }}
           />
         );
-      case 'teamConfirm':
-        return (
-          teamContext.selectedTeam && (
-            <Button
-              onClick={() => {
-                teamContext
-                  .saveSelectedTeam()
-                  .then(() => console.log('success'));
-              }}
-            >
-              Confirm {teamContext.selectedTeam.name}
-            </Button>
-          )
-        );
-      case 'teamselect':
+      case "teamselect":
       default:
         return null;
     }
   };
+
   useEffect(() => {
     setTimeout(() => {
       if (window.innerHeight !== height) {
@@ -83,14 +68,15 @@ const TeamSelectionPage: React.FC<IProps> = ({
 
   return (
     <div className={styles.container}>
-      <TeamSelect
-        minHeight={height}
-        teams={teams}
-        selectedTeamId={teamContextId}
-        onSelectTeam={chooseTeam}
-        showConfirm={teamConfirmed}
-        // bodyContent={() => getStageContent()}
-      />
+      <div className={cx(styles.bgImg, { [styles.blurred]: !!teamConfirmed })}>
+        <TeamSelect
+          teams={teams}
+          selectedTeamId={teamContextId}
+          onSelectTeam={chooseTeam}
+          showConfirm={teamConfirmed}
+        />
+      </div>
+      <div className={styles.content}>{getStageContent()}</div>
       {!!teamContextId && !teamConfirmed && (
         <div className={styles.footerContent}>
           <Button
@@ -99,7 +85,7 @@ const TeamSelectionPage: React.FC<IProps> = ({
             color="primary"
             onClick={() => {
               confirmTeam(teamContextId);
-              setProgressStage('entry');
+              setProgressStage("entry");
             }}
           >
             Continue

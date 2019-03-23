@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 export interface ISessionGame {
   active: boolean;
@@ -6,8 +6,9 @@ export interface ISessionGame {
   order: number;
   pointsAvailable: number;
   completedAt: Date | false;
-  unlockeddAt: Date | false;
+  unlockedAt: Date | false;
   gameId: string;
+  displayHidden: boolean;
   [key: string]: any;
 }
 
@@ -25,7 +26,7 @@ export interface IGameplaySession {
   [key: string]: any;
   games: {
     [gameId: string]: ISessionGame;
-  }
+  };
 }
 
 export interface IContext {
@@ -44,10 +45,10 @@ export interface IContext {
   };
   questionsById: {
     [questionId: string]: any;
-  }
+  };
   questionsByGameId: {
     [gameId: string]: any;
-  }
+  };
 }
 
 export default React.createContext<IContext>({
@@ -61,5 +62,5 @@ export default React.createContext<IContext>({
   markQuestionAsComplete: () => {},
   unlockNextQuestion: () => {},
   unlockQuestion: () => {},
-  markGameAsComplete: () => {},
-})
+  markGameAsComplete: () => {}
+});
